@@ -1,0 +1,19 @@
+{
+  "name": "@synchronous/iot-client",
+  "version": "0.1.0",
+  "description": "IoT Client of Synchronous",
+  "main": "build/index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/node": "^15.12.1",
+    "socket.io-client": "^4.1.2",
+    "@synchronous/common": "1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  },
+  "scripts": {
+    "start": "tsc && node build/index.js"
+  }
+}

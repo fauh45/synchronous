@@ -1,0 +1,13 @@
+{
+  "name": "synchronous",
+  "description": "Synchronous Monorepo",
+  "author": "Fauzan Lubis <fauzanfauh45@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "central",
+    "edge",
+    "iot-client",
+    "common"
+  ]
+}

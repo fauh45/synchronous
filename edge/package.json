@@ -1,0 +1,31 @@
+{
+  "name": "@synchronous/edge",
+  "version": "0.1.0",
+  "description": "Synchronous edge server",
+  "main": "build/index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^15.12.1",
+    "@types/pino": "^6.3.8",
+    "pino-pretty": "^5.0.2",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "@synchronous/common": "1.0.0",
+    "@types/redis": "^2.8.29",
+    "handy-redis": "^2.2.1",
+    "pino": "^6.11.3",
+    "redis": "^3.1.2",
+    "socket.io": "^4.1.2",
+    "socket.io-client": "^4.1.2"
+  },
+  "scripts": {
+    "start": "tsc && node build/index.js",
+    "start:pretty": "yarn start | npx pino-pretty"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.3",
+    "utf-8-validate": "^5.0.5"
+  }
+}

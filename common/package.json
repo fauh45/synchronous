@@ -1,0 +1,13 @@
+{
+  "name": "@synchronous/common",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}
