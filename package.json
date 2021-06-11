@@ -8,6 +8,7 @@
     "central",
     "edge",
     "iot-client",
-    "common"
+    "common",
+    "sync-delivers-demo"
   ]
 }

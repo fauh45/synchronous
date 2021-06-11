@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "✨ synchronous",
+			"path": "."
+		},
+		{
+			"name": "@synchronous/central",
+			"path": "central"
+		},
+		{
+			"name": "📦 @synchronous/common",
+			"path": "common"
+		},
+		{
+			"name": "@synchronous/edge",
+			"path": "edge"
+		},
+		{
+			"name": "@synchronous/iot-client",
+			"path": "iot-client"
+		}
+	],
+	"settings": {}
+}
