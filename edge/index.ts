@@ -12,7 +12,9 @@ import {
   REMOVE_DEVICE_EVENT,
   AddDeviceMessage,
   RemoveDeviceMessage,
-  SubscriptionMessage,
+  DeviceMessage,
+  CENTRAL_PASSTHROUGH_EVENT,
+  CentralPassthroughMessage,
 } from "@synchronous/common";
 import {
   addDevice,
@@ -32,7 +34,11 @@ import { logger } from "./helper/logger";
 
 // Server instance
 const httpServer = createServer();
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  }
+});
 
 // Central client
 const central_socket = ioClient(Config.server.central_server, {
@@ -53,6 +59,21 @@ central_socket.on("connect", () => {
     logger.info(params, "Removed device id " + params.device_id);
     removeDevice(params.device_id, params.user_account);
   });
+
+  central_socket.on(
+    CENTRAL_PASSTHROUGH_EVENT,
+    (params: CentralPassthroughMessage) => {
+      logger.info(params, "Sending message to " + params.to);
+
+      const device_message: DeviceMessage = {
+        from: params.user_account,
+        connection_id: central_socket.id,
+        message: params.message,
+      };
+
+      io.to(params.to).emit(MESSAGE_EVENT, device_message);
+    }
+  );
 });
 
 central_socket.on("connect_error", (err) => {
@@ -89,14 +110,20 @@ io.use(async (socket, next) => {
 
 io.on("connection", (socket) => {
   socket.on("MessageDevice", async (params: MessageDevice) => {
-    const { to_connection_id, message } = params;
+    const { device_id, to_connection_id, message } = params;
     logger.debug(
       params,
       "Client " + socket.id + " messages " + to_connection_id
     );
 
-    await sendMessage(to_connection_id, message);
-    io.to(to_connection_id).emit(MESSAGE_EVENT, message);
+    const device_message: DeviceMessage = {
+      from: device_id,
+      connection_id: socket.id,
+      message: message,
+    };
+
+    sendMessage(to_connection_id, JSON.stringify(device_message));
+    io.to(to_connection_id).emit(MESSAGE_EVENT, device_message);
 
     sendToCentralConnectionId(central_socket, to_connection_id, message);
   });
@@ -106,7 +133,7 @@ io.on("connection", (socket) => {
     logger.debug(params, "Client " + socket.id + " send broadcast");
 
     const device_id = await getDeviceId(socket.id);
-    const message_subs: SubscriptionMessage = {
+    const message_subs: DeviceMessage = {
       from: device_id,
       connection_id: socket.id,
       message: message,

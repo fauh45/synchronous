@@ -85,6 +85,7 @@ export const checkIfAuthorized = async (
 
 export const setConnectionId = (device_id: string, connection_id: string) => {
   client.set(device_id + CONNECTION_ID_SUFFIX, connection_id);
+  client.set(device_id, device_id);
   client.set(connection_id + DEVICE_ID_SUFFIX, device_id);
 };
 

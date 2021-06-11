@@ -6,9 +6,10 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@synchronous/common": "1.0.0",
     "@types/node": "^15.12.1",
-    "socket.io-client": "^4.1.2",
-    "@synchronous/common": "1.0.0"
+    "pino": "^6.11.3",
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
     "typescript": "^4.3.2"

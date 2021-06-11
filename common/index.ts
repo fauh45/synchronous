@@ -5,8 +5,8 @@ export enum LOCATION {
   BO = "BO",
 }
 
-export const SYNC_USER_ACCOUNT = "6l1pbU84ed";
-export const SYNC_ROBOT_ID = "6l1pbU84ed";
+export const SYNC_USER_ACCOUNT = "USER-6l1pbU84ed";
+export const SYNC_ROBOT_ID = "DEVICE-6l1pbU84ed";
 
 export function isObjectBase(object: any): object is Base {
   if ((object as Base).device_id && (object as Base).user_account) {

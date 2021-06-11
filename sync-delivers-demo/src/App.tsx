@@ -2,14 +2,20 @@ import "@fontsource/roboto";
 import {
   Box,
   Button,
+  Collapse,
   createMuiTheme,
+  IconButton,
   ThemeProvider,
   Typography,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import LoadingBody from "./LoadingBody";
 import LoginBody from "./LoginBody";
 import TrackingScreen from "./TrackingScreen";
+import Config from "./config";
+import { AuthResponse } from "../../common/build";
 
 const theme = createMuiTheme({
   palette: {
@@ -37,19 +43,45 @@ enum STATUS {
 
 function App() {
   const [status, setStatus] = React.useState<STATUS>(STATUS.LoggedOut);
+  const [authError, setAuthError] = React.useState(false);
+  const [edgeInfo, setEdgeInfo] = React.useState<AuthResponse>({
+    device_id: "",
+    robot_device_id: "",
+    server_url: "",
+    user_account: "",
+  });
 
-  const loginHandler = (event: { username: string; password: string }) => {
-    console.log(event);
+  // Not so elegant way to make sure it never be empty
 
-    setStatus(STATUS.WaitingForServer);
+  const loginHandler = async (event: {
+    username: string;
+    password: string;
+  }) => {
+    const response = await fetch(Config.central_server + "/auth", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(event),
+    });
+
+    if (response.status === 200) {
+      setEdgeInfo(await response.json());
+      console.log(edgeInfo);
+
+      setAuthError(false);
+      setStatus(STATUS.WaitingForServer);
+
+      return;
+    }
+
+    setAuthError(true);
   };
 
   const handleTrackingInfo = async () => {
-    const repsonse = await fetch(
-      "https://jsonplaceholder.typicode.com/todos/1"
-    );
-    console.log(await repsonse.json());
-
+    // Should be where it get the data from the central server
+    // Now it has been changed to get data from the auth
+    // So now it does nothing, and I'm too lazy to remove it
+    // :P
     setStatus(STATUS.Tracking);
   };
 
@@ -71,7 +103,7 @@ function App() {
   drawOnStatus.set(STATUS.WaitingForServer, <LoadingBody />);
   drawOnStatus.set(
     STATUS.Tracking,
-    <TrackingScreen doneHandler={handleDone} />
+    <TrackingScreen doneHandler={handleDone} {...edgeInfo} />
   );
 
   return (
@@ -100,6 +132,27 @@ function App() {
               ) : null}
             </Box>
           </Box>
+
+          <Collapse in={authError}>
+            <Alert
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="secondary"
+                  size="small"
+                  onClick={() => {
+                    setAuthError(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              severity="warning"
+              variant="filled"
+            >
+              Authentication Error, please try again!
+            </Alert>
+          </Collapse>
 
           <Box padding={1} height={1}>
             {drawOnStatus.get(status)}

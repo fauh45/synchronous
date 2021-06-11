@@ -33,3 +33,9 @@ enum DeviceUpdateAction {
 export interface UpdateDevice extends Base {
   action: DeviceUpdateAction;
 }
+
+export interface CentralPassthroughMessage {
+  user_account: string;
+  to: string;
+  message: string;
+}

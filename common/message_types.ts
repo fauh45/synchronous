@@ -4,6 +4,7 @@ export const MESSAGE_EVENT = "Message";
 export const MESSAGE_SUBSCRIPTION_EVENT = "MessageSubscription";
 
 export const CENTRAL_MESSAGE_EVENT = "CentralMessage";
+export const CENTRAL_PASSTHROUGH_EVENT = "CentralPassthrough";
 export const ADD_DEVICE_EVENT = "AddDevice";
 export const REMOVE_DEVICE_EVENT = "RemoveDevice";
 
@@ -18,5 +19,6 @@ export interface CentralMessage {
   message: string;
 }
 
+export type DeviceMessage = SubscriptionMessage;
 export type AddDeviceMessage = Base;
 export type RemoveDeviceMessage = Base;
