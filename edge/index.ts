@@ -73,6 +73,7 @@ io.use(async (socket, next) => {
       logger.info(auth, "Client " + socket.id + " register with data");
 
       socket.join(auth.user_account);
+      socket.join(auth.device_id);
       setConnectionId(auth.device_id, socket.id);
 
       next();
