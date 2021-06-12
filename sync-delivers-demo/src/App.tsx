@@ -82,7 +82,9 @@ function App() {
     // Now it has been changed to get data from the auth
     // So now it does nothing, and I'm too lazy to remove it
     // :P
-    setStatus(STATUS.Tracking);
+    setTimeout(() => {
+      setStatus(STATUS.Tracking);
+    }, 150);
   };
 
   const handleDone = () => {

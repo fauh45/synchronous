@@ -1,5 +1,6 @@
 const config = {
-  central_server: "http://localhost:58008",
+  central_server:
+    process.env.REACT_APP_CENTRAL_SERVER || "http://localhost:3000",
 };
 
 export default config;
